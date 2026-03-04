@@ -1,0 +1,231 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* TravelDome Color System — Deep Teal + Amber Gold */
+    --background: 0.98 0.005 95;
+    --foreground: 0.18 0.03 240;
+
+    --card: 1 0 0;
+    --card-foreground: 0.18 0.03 240;
+
+    --popover: 1 0 0;
+    --popover-foreground: 0.18 0.03 240;
+
+    /* Primary: Deep Teal */
+    --primary: 0.38 0.1 200;
+    --primary-foreground: 0.98 0.005 95;
+
+    /* Secondary: Warm Sand */
+    --secondary: 0.94 0.02 85;
+    --secondary-foreground: 0.25 0.03 220;
+
+    /* Muted */
+    --muted: 0.94 0.01 200;
+    --muted-foreground: 0.52 0.03 220;
+
+    /* Accent: Amber Gold */
+    --accent: 0.72 0.17 65;
+    --accent-foreground: 0.15 0.03 240;
+
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    --border: 0.88 0.02 200;
+    --input: 0.88 0.02 200;
+    --ring: 0.38 0.1 200;
+
+    /* Chart */
+    --chart-1: 0.72 0.17 65;
+    --chart-2: 0.38 0.1 200;
+    --chart-3: 0.65 0.18 145;
+    --chart-4: 0.6 0.15 30;
+    --chart-5: 0.55 0.12 280;
+
+    /* Sidebar */
+    --sidebar: 0.22 0.05 220;
+    --sidebar-foreground: 0.92 0.01 200;
+    --sidebar-primary: 0.72 0.17 65;
+    --sidebar-primary-foreground: 0.15 0.03 240;
+    --sidebar-accent: 0.3 0.06 220;
+    --sidebar-accent-foreground: 0.92 0.01 200;
+    --sidebar-border: 0.3 0.06 220;
+    --sidebar-ring: 0.72 0.17 65;
+
+    /* Custom TravelDome tokens */
+    --teal-deep: 0.25 0.07 210;
+    --teal-mid: 0.38 0.1 200;
+    --teal-light: 0.6 0.1 200;
+    --gold: 0.72 0.17 65;
+    --gold-light: 0.85 0.12 75;
+    --sand: 0.94 0.02 85;
+    --hero-overlay: 0.12 0.04 220;
+  }
+
+  .dark {
+    --background: 0.14 0.04 220;
+    --foreground: 0.94 0.01 200;
+
+    --card: 0.18 0.05 220;
+    --card-foreground: 0.94 0.01 200;
+
+    --popover: 0.2 0.05 220;
+    --popover-foreground: 0.94 0.01 200;
+
+    --primary: 0.72 0.17 65;
+    --primary-foreground: 0.15 0.03 240;
+
+    --secondary: 0.25 0.06 220;
+    --secondary-foreground: 0.94 0.01 200;
+
+    --muted: 0.22 0.05 220;
+    --muted-foreground: 0.62 0.03 220;
+
+    --accent: 0.72 0.17 65;
+    --accent-foreground: 0.15 0.03 240;
+
+    --destructive: 0.704 0.191 22.216;
+    --destructive-foreground: 0.985 0 0;
+
+    --border: 0.28 0.05 220;
+    --input: 0.28 0.05 220;
+    --ring: 0.72 0.17 65;
+
+    --chart-1: 0.72 0.17 65;
+    --chart-2: 0.6 0.1 200;
+    --chart-3: 0.65 0.18 145;
+    --chart-4: 0.6 0.15 30;
+    --chart-5: 0.55 0.12 280;
+
+    --sidebar: 0.12 0.04 220;
+    --sidebar-foreground: 0.92 0.01 200;
+    --sidebar-primary: 0.72 0.17 65;
+    --sidebar-primary-foreground: 0.15 0.03 240;
+    --sidebar-accent: 0.2 0.05 220;
+    --sidebar-accent-foreground: 0.92 0.01 200;
+    --sidebar-border: 0.22 0.05 220;
+    --sidebar-ring: 0.72 0.17 65;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .hero-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.22 0.07 210 / 0.85) 0%,
+      oklch(0.15 0.05 230 / 0.6) 50%,
+      oklch(0.72 0.17 65 / 0.3) 100%
+    );
+  }
+
+  .gold-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.72 0.17 65) 0%,
+      oklch(0.85 0.12 75) 100%
+    );
+  }
+
+  .teal-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.22 0.07 210) 0%,
+      oklch(0.38 0.1 200) 100%
+    );
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, oklch(0.38 0.1 200), oklch(0.72 0.17 65));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass-card {
+    background: oklch(1 0 0 / 0.08);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(1 0 0 / 0.15);
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .noise-bg {
+    position: relative;
+  }
+
+  .noise-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .masonry-grid {
+    columns: 2;
+    column-gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .masonry-grid {
+      columns: 3;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .masonry-grid {
+      columns: 4;
+    }
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: oklch(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(var(--primary) / 0.4);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(var(--primary) / 0.7);
+}
