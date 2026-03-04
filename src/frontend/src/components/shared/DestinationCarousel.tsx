@@ -8,31 +8,31 @@ const destinations = [
     slug: "baku-unveiled",
     name: "Baku, Azerbaijan",
     label: "Explore Baku",
-    image: "/assets/generated/baku-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-baku.dim_1920x1080.jpg",
   },
   {
     slug: "bali-bliss",
     name: "Bali, Indonesia",
     label: "Explore Bali",
-    image: "/assets/generated/bali-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-bali.dim_1920x1080.jpg",
   },
   {
     slug: "dubai-premium",
     name: "Dubai, UAE",
     label: "Explore Dubai",
-    image: "/assets/generated/dubai-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-dubai.dim_1920x1080.jpg",
   },
   {
     slug: "kashmir-winter-wonders",
     name: "Kashmir, India",
     label: "Explore Kashmir",
-    image: "/assets/generated/kashmir-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-kashmir.dim_1920x1080.jpg",
   },
   {
     slug: "sikkim-darjeeling-escape",
     name: "Sikkim and Darjeeling",
     label: "Explore Sikkim",
-    image: "/assets/generated/sikkim-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-sikkim.dim_1920x1080.jpg",
   },
 ];
 
@@ -93,7 +93,7 @@ export default function DestinationCarousel() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-display font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 cursor-pointer hover:text-gold transition-colors"
+          className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-8xl text-white mb-6 cursor-pointer hover:text-gold transition-colors px-2"
           onClick={() =>
             navigate({
               to: "/packages/$packageId",
@@ -142,7 +142,7 @@ export default function DestinationCarousel() {
         type="button"
         onClick={prev}
         data-ocid="hero.secondary_button"
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/30 text-white hover:bg-black/50 transition-colors flex items-center justify-center"
+        className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-10 md:h-10 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors flex items-center justify-center"
         aria-label="Previous destination"
       >
         <ChevronLeft className="w-5 h-5" />
@@ -150,7 +150,7 @@ export default function DestinationCarousel() {
       <button
         type="button"
         onClick={next}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/30 text-white hover:bg-black/50 transition-colors flex items-center justify-center"
+        className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-10 md:h-10 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors flex items-center justify-center"
         aria-label="Next destination"
       >
         <ChevronRight className="w-5 h-5" />

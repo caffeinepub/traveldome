@@ -14,6 +14,7 @@ import SectionHeader from "../components/shared/SectionHeader";
 import StarRating from "../components/shared/StarRating";
 import { useLanguage } from "../contexts/LanguageContext";
 import { bakuPackage } from "../data/bakuPackage";
+import { sampleReviews } from "../data/sampleData";
 import { useGetApprovedReviews } from "../hooks/useQueries";
 import { useGetPublishedBlogPosts } from "../hooks/useQueries";
 
@@ -22,31 +23,31 @@ const destinations = [
     slug: "baku-unveiled",
     name: "Baku",
     label: "Azerbaijan",
-    image: "/assets/generated/baku-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-baku.dim_1920x1080.jpg",
   },
   {
     slug: "bali-bliss",
     name: "Bali",
     label: "Indonesia",
-    image: "/assets/generated/bali-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-bali.dim_1920x1080.jpg",
   },
   {
     slug: "dubai-premium",
     name: "Dubai",
     label: "UAE",
-    image: "/assets/generated/dubai-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-dubai.dim_1920x1080.jpg",
   },
   {
     slug: "kashmir-winter-wonders",
     name: "Kashmir",
     label: "India",
-    image: "/assets/generated/kashmir-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-kashmir.dim_1920x1080.jpg",
   },
   {
     slug: "sikkim-darjeeling-escape",
     name: "Sikkim",
     label: "India",
-    image: "/assets/generated/sikkim-hero.dim_1400x700.jpg",
+    image: "/assets/generated/hero-sikkim.dim_1920x1080.jpg",
   },
 ];
 
@@ -56,7 +57,9 @@ export default function Home() {
   const { data: blogs } = useGetPublishedBlogPosts();
 
   const displayReviews =
-    reviews && reviews.length > 0 ? reviews.slice(0, 3) : [];
+    reviews && reviews.length > 0
+      ? reviews.slice(0, 3)
+      : sampleReviews.slice(0, 3);
   const displayBlogs = blogs && blogs.length > 0 ? blogs.slice(0, 3) : [];
 
   const stats = [
@@ -125,7 +128,7 @@ export default function Home() {
             subtitle="Explore handcrafted journeys to the world's most stunning destinations"
           />
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mt-10">
             {destinations.map((dest, i) => (
               <motion.div
                 key={dest.slug}
@@ -213,42 +216,40 @@ export default function Home() {
       </section>
 
       {/* ── Testimonials ──────────────────────────────────────────────────── */}
-      {displayReviews.length > 0 && (
-        <section className="section-padding bg-background">
-          <div className="container mx-auto px-4">
-            <SectionHeader
-              title={t("testimonials")}
-              subtitle="Real experiences from real travelers"
-            />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-              {displayReviews.map((review, i) => (
-                <motion.div
-                  key={review.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="bg-card rounded-2xl p-6 shadow-card relative"
-                >
-                  <div className="text-5xl font-display text-gold/20 absolute top-4 right-6 leading-none select-none">
-                    "
+      <section className="section-padding bg-background">
+        <div className="container mx-auto px-4">
+          <SectionHeader
+            title={t("testimonials")}
+            subtitle="Real experiences from real travelers"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+            {displayReviews.map((review, i) => (
+              <motion.div
+                key={review.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-card rounded-2xl p-6 shadow-card relative"
+              >
+                <div className="text-5xl font-display text-gold/20 absolute top-4 right-6 leading-none select-none">
+                  "
+                </div>
+                <StarRating rating={Number(review.rating)} size="sm" />
+                <p className="text-sm text-muted-foreground mt-3 mb-4 leading-relaxed">
+                  "{review.reviewText}"
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full teal-gradient flex items-center justify-center text-white font-bold text-sm">
+                    {review.name[0]}
                   </div>
-                  <StarRating rating={Number(review.rating)} size="sm" />
-                  <p className="text-sm text-muted-foreground mt-3 mb-4 leading-relaxed">
-                    "{review.reviewText}"
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full teal-gradient flex items-center justify-center text-white font-bold text-sm">
-                      {review.name[0]}
-                    </div>
-                    <span className="font-semibold text-sm">{review.name}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                  <span className="font-semibold text-sm">{review.name}</span>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* ── Blog Preview ──────────────────────────────────────────────────── */}
       {displayBlogs.length > 0 && (

@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-router";
 import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
+import WelcomePopup from "./components/shared/WelcomePopup";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
@@ -34,6 +35,7 @@ const rootRoute = createRootRoute({
       <Outlet />
       <Footer />
       <Toaster richColors position="top-right" />
+      <WelcomePopup />
     </LanguageProvider>
   ),
 });

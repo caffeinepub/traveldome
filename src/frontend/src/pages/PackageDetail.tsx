@@ -682,36 +682,38 @@ export default function PackageDetail() {
           {/* Left: Tabs */}
           <div className="lg:col-span-2">
             <Tabs defaultValue="itinerary">
-              <TabsList className="w-full h-auto p-1 bg-secondary rounded-xl grid grid-cols-4 mb-8">
-                <TabsTrigger
-                  value="itinerary"
-                  data-ocid="package_detail.itinerary_tab"
-                  className="rounded-lg data-[state=active]:teal-gradient data-[state=active]:text-white text-xs md:text-sm py-2.5"
-                >
-                  Itinerary
-                </TabsTrigger>
-                <TabsTrigger
-                  value="inclusions"
-                  data-ocid="package_detail.inclusions_tab"
-                  className="rounded-lg data-[state=active]:teal-gradient data-[state=active]:text-white text-xs md:text-sm py-2.5"
-                >
-                  Inclusions
-                </TabsTrigger>
-                <TabsTrigger
-                  value="pricing"
-                  data-ocid="package_detail.pricing_tab"
-                  className="rounded-lg data-[state=active]:teal-gradient data-[state=active]:text-white text-xs md:text-sm py-2.5"
-                >
-                  Pricing
-                </TabsTrigger>
-                <TabsTrigger
-                  value="notes"
-                  data-ocid="package_detail.notes_tab"
-                  className="rounded-lg data-[state=active]:teal-gradient data-[state=active]:text-white text-xs md:text-sm py-2.5"
-                >
-                  Notes
-                </TabsTrigger>
-              </TabsList>
+              <div className="overflow-x-auto -mx-1 px-1 mb-8">
+                <TabsList className="w-full h-auto p-1 bg-secondary rounded-xl grid grid-cols-4 min-w-[340px]">
+                  <TabsTrigger
+                    value="itinerary"
+                    data-ocid="package_detail.itinerary_tab"
+                    className="rounded-lg data-[state=active]:teal-gradient data-[state=active]:text-white text-xs md:text-sm py-2.5"
+                  >
+                    Itinerary
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="inclusions"
+                    data-ocid="package_detail.inclusions_tab"
+                    className="rounded-lg data-[state=active]:teal-gradient data-[state=active]:text-white text-xs md:text-sm py-2.5"
+                  >
+                    Inclusions
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="pricing"
+                    data-ocid="package_detail.pricing_tab"
+                    className="rounded-lg data-[state=active]:teal-gradient data-[state=active]:text-white text-xs md:text-sm py-2.5"
+                  >
+                    Pricing
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="notes"
+                    data-ocid="package_detail.notes_tab"
+                    className="rounded-lg data-[state=active]:teal-gradient data-[state=active]:text-white text-xs md:text-sm py-2.5"
+                  >
+                    Notes
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
               {/* ITINERARY TAB */}
               <TabsContent value="itinerary" className="space-y-6">
@@ -1289,32 +1291,34 @@ export default function PackageDetail() {
 
       {/* Sticky bottom bar */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-black/95 backdrop-blur-md border-t border-white/10 py-3 px-4">
-        <div className="container mx-auto flex items-center justify-between gap-4 max-w-5xl">
-          <div className="hidden sm:block">
-            <p className="text-white font-display font-bold text-lg">
-              {pkg.name} — {pkg.duration}
+        <div className="container mx-auto flex items-center justify-between gap-3 max-w-5xl">
+          <div className="min-w-0 flex-1 sm:flex-none">
+            <p className="text-white font-display font-bold text-sm sm:text-lg truncate">
+              {pkg.name}
             </p>
-            <p className="text-gold text-sm font-semibold">
-              From ₹{pkg.startingPrice.toLocaleString("en-IN")}/person
+            <p className="text-gold text-xs sm:text-sm font-semibold">
+              From Rs.{pkg.startingPrice.toLocaleString("en-IN")}/person
             </p>
           </div>
-          <div className="flex gap-3 w-full sm:w-auto">
+          <div className="flex gap-2 sm:gap-3 shrink-0">
             <Button
               onClick={() => setLeadModalOpen(true)}
               data-ocid="package_detail.download_button"
               variant="outline"
-              className="flex-1 sm:flex-none border-white/30 text-white hover:bg-white/10 font-semibold"
+              size="sm"
+              className="border-white/30 text-white hover:bg-white/10 font-semibold text-xs sm:text-sm px-3 sm:px-4"
             >
-              <Download className="w-4 h-4 mr-2" />
-              Download PDF
+              <Download className="w-3.5 h-3.5 sm:mr-2" />
+              <span className="hidden sm:inline">Download PDF</span>
             </Button>
             <Button
               data-ocid="package_detail.book_button"
+              size="sm"
               onClick={() => {
                 const form = document.getElementById("b-name");
                 form?.scrollIntoView({ behavior: "smooth", block: "center" });
               }}
-              className="flex-1 sm:flex-none gold-gradient text-foreground font-bold border-0 hover:opacity-90"
+              className="gold-gradient text-foreground font-bold border-0 hover:opacity-90 text-xs sm:text-sm px-4 sm:px-6"
             >
               Book Now
             </Button>
