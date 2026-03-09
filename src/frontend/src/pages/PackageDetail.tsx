@@ -256,7 +256,7 @@ function printItinerary(guestName: string, pkg: PackageData) {
   </div>
 
   <div class="footer">
-    <p>TravelDome | traveldome.in | WhatsApp: +91 70426 36363 | @traveldome._</p>
+    <p>TravelDome | traveldome.in | WhatsApp: +91 88798 09915 / +91 99229 17255 | @traveldome._</p>
     <p>Saropi Saraswati, CHS LTD, 002, Ghazala Road, Pleasant Park, Mira Road East, Mira Bhayandar, Maharashtra 401107</p>
     <p>This is a digital itinerary. Prices and dates are subject to availability.</p>
   </div>

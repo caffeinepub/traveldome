@@ -56,7 +56,7 @@ export default function Footer() {
                 <SiInstagram className="w-4 h-4" />
               </a>
               <a
-                href="https://wa.me/917042636363"
+                href="https://wa.me/918879809915"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/10 hover:bg-gold transition-colors flex items-center justify-center"
@@ -187,13 +187,21 @@ export default function Footer() {
                 </div>
               </li>
               <li className="flex gap-2.5 text-sm text-white/70">
-                <Phone className="w-4 h-4 text-gold shrink-0" />
-                <a
-                  href="https://wa.me/917042636363"
-                  className="hover:text-gold transition-colors"
-                >
-                  +91 70426 36363
-                </a>
+                <Phone className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+                <div className="flex flex-col gap-0.5">
+                  <a
+                    href="https://wa.me/918879809915"
+                    className="hover:text-gold transition-colors"
+                  >
+                    +91 88798 09915
+                  </a>
+                  <a
+                    href="https://wa.me/919922917255"
+                    className="hover:text-gold transition-colors"
+                  >
+                    +91 99229 17255
+                  </a>
+                </div>
               </li>
               <li className="flex gap-2.5 text-sm text-white/70">
                 <Mail className="w-4 h-4 text-gold shrink-0" />
@@ -201,7 +209,7 @@ export default function Footer() {
               </li>
               <li className="flex gap-2.5 text-sm text-white/70">
                 <Clock className="w-4 h-4 text-gold shrink-0" />
-                <span>Mon – Sat: 9:00 AM – 7:00 PM</span>
+                <span>Mon – Sat: 10:00 AM – 7:00 PM</span>
               </li>
             </ul>
           </div>

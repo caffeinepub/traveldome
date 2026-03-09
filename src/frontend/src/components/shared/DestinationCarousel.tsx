@@ -5,34 +5,39 @@ import { useCallback, useEffect, useState } from "react";
 
 const destinations = [
   {
-    slug: "baku-unveiled",
-    name: "Baku, Azerbaijan",
-    label: "Explore Baku",
-    image: "/assets/generated/hero-baku.dim_1920x1080.jpg",
-  },
-  {
     slug: "bali-bliss",
     name: "Bali, Indonesia",
     label: "Explore Bali",
-    image: "/assets/generated/hero-bali.dim_1920x1080.jpg",
+    image:
+      "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?q=80&w=1920&auto=format&fit=crop",
+  },
+  {
+    slug: "baku-unveiled",
+    name: "Baku, Azerbaijan",
+    label: "Explore Baku",
+    image:
+      "https://images.unsplash.com/photo-1596306499300-0b7b1689b9f6?q=80&w=1920&auto=format&fit=crop",
   },
   {
     slug: "dubai-premium",
     name: "Dubai, UAE",
     label: "Explore Dubai",
-    image: "/assets/generated/hero-dubai.dim_1920x1080.jpg",
+    image:
+      "https://images.unsplash.com/photo-1601914196574-8b79db884f73?q=80&w=1920&auto=format&fit=crop",
   },
   {
     slug: "kashmir-winter-wonders",
     name: "Kashmir, India",
     label: "Explore Kashmir",
-    image: "/assets/generated/hero-kashmir.dim_1920x1080.jpg",
+    image:
+      "https://images.unsplash.com/photo-1623612175509-30e97f5aa195?q=80&w=1920&auto=format&fit=crop",
   },
   {
     slug: "sikkim-darjeeling-escape",
     name: "Sikkim and Darjeeling",
     label: "Explore Sikkim",
-    image: "/assets/generated/hero-sikkim.dim_1920x1080.jpg",
+    image:
+      "https://plus.unsplash.com/premium_photo-1697730403371-4637af8a7bf9?q=80&w=1920&auto=format&fit=crop",
   },
 ];
 
@@ -55,7 +60,7 @@ export default function DestinationCarousel() {
   const dest = destinations[current];
 
   return (
-    <div className="relative h-screen min-h-[600px] overflow-hidden">
+    <div className="relative h-[75vh] min-h-[480px] max-h-[680px] overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}

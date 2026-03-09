@@ -51,12 +51,12 @@ export default function Contact() {
     {
       icon: <MapPin className="w-5 h-5" />,
       label: "Office",
-      text: "New Delhi, India",
+      text: "Saropi Saraswati CHS LTD, 002 Ghazala Road, Pleasant Park, Mira Road East, Mira Bhayandar, Maharashtra 401107",
     },
     {
       icon: <Phone className="w-5 h-5" />,
       label: "Phone / WhatsApp",
-      text: "+91 70426 36363",
+      text: "+91 88798 09915 / +91 99229 17255",
     },
     {
       icon: <Mail className="w-5 h-5" />,
@@ -99,7 +99,7 @@ export default function Contact() {
           className="mt-6"
         >
           <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi TravelDome! I'm interested in the Baku package. Please share more details.")}`}
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi TravelDome! I would like to know more about your tour packages.")}`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -158,16 +158,28 @@ export default function Contact() {
                   Get instant replies on WhatsApp. Our team responds within
                   minutes during business hours.
                 </p>
-                <a
-                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi TravelDome! I'm interested in the Baku package. Please share more details.")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border-0 font-semibold">
-                    <MessageCircle className="w-4 h-4 mr-2" />
-                    +91 70426 36363
-                  </Button>
-                </a>
+                <div className="flex flex-col gap-2">
+                  <a
+                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi TravelDome! I would like to know more about your tour packages.")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border-0 font-semibold">
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      +91 88798 09915
+                    </Button>
+                  </a>
+                  <a
+                    href={`https://wa.me/919922917255?text=${encodeURIComponent("Hi TravelDome! I would like to know more about your tour packages.")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border-0 font-semibold">
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      +91 99229 17255
+                    </Button>
+                  </a>
+                </div>
               </div>
             </motion.div>
 

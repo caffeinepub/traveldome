@@ -1,9 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, Calendar, User } from "lucide-react";
+import { ArrowRight, Calendar, User } from "lucide-react";
 import { motion } from "motion/react";
 import { bakuPackage } from "../data/bakuPackage";
+import { sampleBlogPosts } from "../data/sampleData";
 import { useGetPublishedBlogPosts } from "../hooks/useQueries";
 
 function getCoverUrl(image: unknown): string {
@@ -17,7 +18,10 @@ function getCoverUrl(image: unknown): string {
 
 export default function Blog() {
   const { data: posts, isLoading } = useGetPublishedBlogPosts();
-  const displayPosts = posts && posts.length > 0 ? posts : [];
+  const displayPosts =
+    posts && posts.length > 0
+      ? posts
+      : ((sampleBlogPosts as unknown as typeof posts) ?? []);
 
   return (
     <main className="pt-16">
@@ -71,9 +75,9 @@ export default function Blog() {
                 </div>
               ))}
             </div>
-          ) : displayPosts.length > 0 ? (
+          ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayPosts.map((post, i) => {
+              {(displayPosts ?? []).map((post, i) => {
                 const coverUrl = getCoverUrl(post.coverImage);
                 const date = new Date(Number(post.date)).toLocaleDateString(
                   "en-IN",
@@ -140,36 +144,6 @@ export default function Blog() {
                 );
               })}
             </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              data-ocid="blog.empty_state"
-              className="flex flex-col items-center justify-center py-20 text-center"
-            >
-              <div className="w-20 h-20 teal-gradient rounded-full flex items-center justify-center mx-auto mb-6">
-                <BookOpen className="w-10 h-10 text-white" />
-              </div>
-              <h2 className="font-display font-bold text-2xl text-foreground mb-3">
-                Blog Coming Soon!
-              </h2>
-              <p className="text-muted-foreground max-w-md text-base">
-                We're crafting travel tips, destination guides, and insider
-                stories for you. Check back soon for the latest travel
-                inspiration!
-              </p>
-              <div className="mt-8 bg-secondary/50 rounded-2xl p-6 max-w-sm w-full">
-                <p className="text-sm font-semibold text-foreground mb-1">
-                  Topics coming soon:
-                </p>
-                <ul className="text-sm text-muted-foreground space-y-1 text-left mt-2">
-                  <li>• 🇦🇿 Complete Baku travel guide for Indians</li>
-                  <li>• 🍽️ Best Indian restaurants in Azerbaijan</li>
-                  <li>• 📋 Azerbaijan visa guide for Indians</li>
-                  <li>• 💡 Packing tips for Baku & Shahdag</li>
-                </ul>
-              </div>
-            </motion.div>
           )}
         </div>
       </section>

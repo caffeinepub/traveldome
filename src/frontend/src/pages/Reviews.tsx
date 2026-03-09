@@ -3,11 +3,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
-import { ExternalLink, Loader2, MessageSquarePlus, Star } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Loader2,
+  MessageSquarePlus,
+  Star,
+} from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import SectionHeader from "../components/shared/SectionHeader";
 import StarRating from "../components/shared/StarRating";
 import { useLanguage } from "../contexts/LanguageContext";
 import { sampleReviews } from "../data/sampleData";
@@ -15,6 +21,207 @@ import { useGetApprovedReviews, useSubmitReview } from "../hooks/useQueries";
 
 const GOOGLE_REVIEWS_URL =
   "https://www.google.com/search?sca_esv=0c0ded2c55dfde36&sxsrf=ANbL-n5xUJoijGsFzVkGBo0SbrE24tTypQ:1772620756431&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOftcrd0ErO-65z8B2-ma2ZN9DqHACIYhQBI8tu3KeVlfzGXefwWGvi7BsDDJNcDXISEsAhWQ_d9lO6qHckNJS6GQdoLC&q=TravelDome+Reviews&sa=X&ved=2ahUKEwjgtYj0hoaTAxVHUWwGHVRQK40Q0bkNegQILRAH&biw=1745&bih=859&dpr=1.1";
+
+function getAvatarColor(name: string): string {
+  const colors = [
+    "#2563eb",
+    "#16a34a",
+    "#dc2626",
+    "#9333ea",
+    "#ea580c",
+    "#0891b2",
+    "#be185d",
+  ];
+  const index = name.charCodeAt(0) % colors.length;
+  return colors[index];
+}
+
+function GoogleIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="#4285F4"
+        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+      />
+    </svg>
+  );
+}
+
+interface ReviewCardProps {
+  review: (typeof sampleReviews)[0];
+}
+
+function ReviewCard({ review }: ReviewCardProps) {
+  return (
+    <div
+      className="bg-card rounded-2xl p-5 shadow-card relative overflow-hidden h-full flex flex-col"
+      style={{ borderTop: `3px solid ${getAvatarColor(review.name)}` }}
+    >
+      {/* Google indicator */}
+      <div className="absolute top-3.5 right-4 flex items-center gap-1 bg-white/80 dark:bg-white/10 border border-gray-200 dark:border-white/10 rounded-full px-2 py-0.5">
+        <GoogleIcon />
+        <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400">
+          Google
+        </span>
+      </div>
+
+      <StarRating rating={Number(review.rating)} size="sm" />
+      <p className="text-sm text-muted-foreground mt-3 mb-4 leading-relaxed flex-1">
+        {review.reviewText}
+      </p>
+      <div className="flex items-center gap-2.5">
+        <div
+          style={{ backgroundColor: getAvatarColor(review.name) }}
+          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 select-none"
+        >
+          {review.name[0].toUpperCase()}
+        </div>
+        <div>
+          <span className="font-semibold text-sm block">{review.name}</span>
+          <span className="text-xs text-muted-foreground">Google Review</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface ReviewsCarouselProps {
+  reviews: typeof sampleReviews;
+}
+
+function ReviewsCarousel({ reviews }: ReviewsCarouselProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [slidesPerView, setSlidesPerView] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Determine slides per view based on container width
+  useEffect(() => {
+    const updateSlidesPerView = () => {
+      if (containerRef.current) {
+        setSlidesPerView(containerRef.current.offsetWidth >= 640 ? 2 : 1);
+      }
+    };
+    updateSlidesPerView();
+    const ro = new ResizeObserver(updateSlidesPerView);
+    if (containerRef.current) ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const maxIndex = Math.max(0, reviews.length - slidesPerView);
+
+  const goTo = useCallback(
+    (index: number) => {
+      setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
+    },
+    [maxIndex],
+  );
+
+  const goNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  }, [maxIndex]);
+
+  const goPrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+  }, [maxIndex]);
+
+  // Auto-advance
+  useEffect(() => {
+    if (isHovered) return;
+    autoPlayRef.current = setInterval(goNext, 5000);
+    return () => {
+      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+    };
+  }, [isHovered, goNext]);
+
+  // Clamp index if slidesPerView changes
+  useEffect(() => {
+    setCurrentIndex((prev) => Math.min(prev, maxIndex));
+  }, [maxIndex]);
+
+  const translateX = -(currentIndex * (100 / slidesPerView));
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative"
+    >
+      {/* Carousel track wrapper */}
+      <div className="overflow-hidden rounded-2xl">
+        <div
+          className="flex"
+          style={{
+            transform: `translateX(${translateX}%)`,
+            transition: "transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
+          }}
+        >
+          {reviews.map((review, i) => (
+            <div
+              key={review.id}
+              data-ocid={`reviews.item.${i + 1}`}
+              style={{ minWidth: `${100 / slidesPerView}%` }}
+              className="px-2"
+            >
+              <ReviewCard review={review} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Arrow buttons */}
+      <button
+        onClick={goPrev}
+        data-ocid="reviews.pagination_prev"
+        type="button"
+        aria-label="Previous review"
+        className="absolute -left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-card border border-border shadow-md flex items-center justify-center hover:bg-muted transition-colors z-10"
+      >
+        <ChevronLeft className="w-4 h-4" />
+      </button>
+      <button
+        onClick={goNext}
+        data-ocid="reviews.pagination_next"
+        type="button"
+        aria-label="Next review"
+        className="absolute -right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-card border border-border shadow-md flex items-center justify-center hover:bg-muted transition-colors z-10"
+      >
+        <ChevronRight className="w-4 h-4" />
+      </button>
+
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-1.5 mt-5">
+        {Array.from({ length: maxIndex + 1 }, (_, i) => i).map((i) => (
+          <button
+            type="button"
+            key={`dot-${i}`}
+            onClick={() => goTo(i)}
+            aria-label={`Go to review ${i + 1}`}
+            className={`rounded-full transition-all duration-300 ${
+              i === currentIndex
+                ? "w-6 h-2 bg-gold"
+                : "w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/60"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Reviews() {
   const { t } = useLanguage();
@@ -84,7 +291,7 @@ export default function Reviews() {
       <section className="section-padding">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Reviews list */}
+            {/* Reviews carousel */}
             <div className="lg:col-span-2">
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -100,43 +307,11 @@ export default function Reviews() {
                     </div>
                   ))}
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {displayReviews.map((review, i) => (
-                    <motion.div
-                      key={review.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.05 }}
-                      className="bg-card rounded-2xl p-5 shadow-card relative"
-                    >
-                      <div className="absolute top-4 right-5 text-4xl font-display text-gold/15 leading-none select-none">
-                        "
-                      </div>
-                      <StarRating rating={Number(review.rating)} size="sm" />
-                      <p className="text-sm text-muted-foreground mt-3 mb-4 leading-relaxed">
-                        "{review.reviewText}"
-                      </p>
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-9 h-9 rounded-full teal-gradient flex items-center justify-center text-white font-bold text-sm">
-                          {review.name[0]}
-                        </div>
-                        <div>
-                          <span className="font-semibold text-sm block">
-                            {review.name}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            Verified Traveler
-                          </span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
+              ) : displayReviews.length > 0 ? (
+                <div className="px-4">
+                  <ReviewsCarousel reviews={displayReviews} />
                 </div>
-              )}
-
-              {!isLoading && displayReviews.length === 0 && (
+              ) : (
                 <div
                   className="text-center py-10 text-muted-foreground"
                   data-ocid="reviews.empty_state"
@@ -152,8 +327,8 @@ export default function Reviews() {
                 {/* Google Reviews Banner */}
                 <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-5 mb-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center shrink-0">
-                      <Star className="w-4 h-4 text-white fill-white" />
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100">
+                      <GoogleIcon />
                     </div>
                     <div>
                       <p className="font-bold text-blue-900 text-sm">

@@ -14,40 +14,45 @@ import SectionHeader from "../components/shared/SectionHeader";
 import StarRating from "../components/shared/StarRating";
 import { useLanguage } from "../contexts/LanguageContext";
 import { bakuPackage } from "../data/bakuPackage";
-import { sampleReviews } from "../data/sampleData";
+import { sampleBlogPosts, sampleReviews } from "../data/sampleData";
 import { useGetApprovedReviews } from "../hooks/useQueries";
 import { useGetPublishedBlogPosts } from "../hooks/useQueries";
 
 const destinations = [
   {
-    slug: "baku-unveiled",
-    name: "Baku",
-    label: "Azerbaijan",
-    image: "/assets/generated/hero-baku.dim_1920x1080.jpg",
-  },
-  {
     slug: "bali-bliss",
     name: "Bali",
     label: "Indonesia",
-    image: "/assets/generated/hero-bali.dim_1920x1080.jpg",
+    image:
+      "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    slug: "baku-unveiled",
+    name: "Baku",
+    label: "Azerbaijan",
+    image:
+      "https://images.unsplash.com/photo-1596306499300-0b7b1689b9f6?q=80&w=800&auto=format&fit=crop",
   },
   {
     slug: "dubai-premium",
     name: "Dubai",
     label: "UAE",
-    image: "/assets/generated/hero-dubai.dim_1920x1080.jpg",
+    image:
+      "https://images.unsplash.com/photo-1601914196574-8b79db884f73?q=80&w=800&auto=format&fit=crop",
   },
   {
     slug: "kashmir-winter-wonders",
     name: "Kashmir",
     label: "India",
-    image: "/assets/generated/hero-kashmir.dim_1920x1080.jpg",
+    image:
+      "https://images.unsplash.com/photo-1623612175509-30e97f5aa195?q=80&w=800&auto=format&fit=crop",
   },
   {
     slug: "sikkim-darjeeling-escape",
     name: "Sikkim",
     label: "India",
-    image: "/assets/generated/hero-sikkim.dim_1920x1080.jpg",
+    image:
+      "https://plus.unsplash.com/premium_photo-1697730403371-4637af8a7bf9?q=80&w=800&auto=format&fit=crop",
   },
 ];
 
@@ -60,13 +65,16 @@ export default function Home() {
     reviews && reviews.length > 0
       ? reviews.slice(0, 3)
       : sampleReviews.slice(0, 3);
-  const displayBlogs = blogs && blogs.length > 0 ? blogs.slice(0, 3) : [];
+  const displayBlogs =
+    blogs && blogs.length > 0
+      ? blogs.slice(0, 3)
+      : (sampleBlogPosts.slice(0, 3) as unknown as typeof blogs);
 
   const stats = [
-    { value: "10,000+", label: "Happy Travelers" },
-    { value: "50+", label: "Destinations" },
-    { value: "8+", label: "Years Experience" },
-    { value: "100+", label: "Tour Packages" },
+    { value: "1000+", label: "Happy Travelers" },
+    { value: "10+", label: "Destinations" },
+    { value: "5+", label: "Years Experience" },
+    { value: "50+", label: "Tour Packages" },
   ];
 
   const whyChooseUs = [
@@ -252,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* ── Blog Preview ──────────────────────────────────────────────────── */}
-      {displayBlogs.length > 0 && (
+      {displayBlogs && displayBlogs.length > 0 && (
         <section className="section-padding bg-secondary/20">
           <div className="container mx-auto px-4">
             <SectionHeader
@@ -352,7 +360,7 @@ export default function Home() {
                 </Button>
               </Link>
               <a
-                href="https://wa.me/917042636363"
+                href="https://wa.me/918879809915"
                 target="_blank"
                 rel="noopener noreferrer"
               >

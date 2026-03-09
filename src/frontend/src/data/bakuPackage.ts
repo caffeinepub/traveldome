@@ -348,4 +348,5 @@ export const bakuPackage = {
   ],
 };
 
-export const WHATSAPP_NUMBER = "917042636363";
+export const WHATSAPP_NUMBER = "918879809915";
+export const WHATSAPP_NUMBER_2 = "919922917255";

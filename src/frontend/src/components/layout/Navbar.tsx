@@ -44,7 +44,7 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBg}`}
     >
-      <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <nav className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link
           to="/"
@@ -54,8 +54,8 @@ export default function Navbar() {
           <img
             src="/assets/uploads/TravelDome-logo-3--1.png"
             alt="TravelDome"
-            className="h-10 w-auto object-contain"
-            style={{ maxHeight: "48px" }}
+            className="h-14 w-auto object-contain"
+            style={{ maxHeight: "64px" }}
           />
         </Link>
 
