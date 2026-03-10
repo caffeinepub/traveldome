@@ -52,10 +52,10 @@ export default function Navbar() {
           className="flex items-center gap-1 group flex-shrink-0"
         >
           <img
-            src="/assets/uploads/TravelDome-logo-3--1.png"
+            src="/assets/uploads/TravelDome-logo-3-1-1.png"
             alt="TravelDome"
-            className="h-14 w-auto object-contain"
-            style={{ maxHeight: "64px" }}
+            className="h-16 w-auto object-contain"
+            style={{ maxHeight: "80px" }}
           />
         </Link>
 
