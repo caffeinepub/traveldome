@@ -4,6 +4,7 @@ import type {
   BlogPost,
   Booking,
   GalleryPhoto,
+  GalleryVideo,
   Review,
   TourCategory,
   TourPackage,
@@ -226,7 +227,7 @@ export function useDeleteBlogPost() {
   });
 }
 
-// ─── Gallery ─────────────────────────────────────────────────────────────────
+// ─── Gallery Photos ───────────────────────────────────────────────────────────
 export function useGetAllGalleryPhotos() {
   const { actor, isFetching } = useActor();
   return useQuery<GalleryPhoto[]>({
@@ -266,6 +267,51 @@ export function useDeleteGalleryPhoto() {
       return actor.deleteGalleryPhoto(id);
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["gallery"] }),
+  });
+}
+
+// ─── Gallery Videos ───────────────────────────────────────────────────────────
+export function useGetAllGalleryVideos() {
+  const { actor, isFetching } = useActor();
+  return useQuery<GalleryVideo[]>({
+    queryKey: ["galleryVideos"],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getAllGalleryVideos();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useAddGalleryVideo() {
+  const { actor } = useActor();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: {
+      title: string;
+      description: string;
+      youtubeUrl: string;
+    }) => {
+      if (!actor) throw new Error("Not connected");
+      return actor.addGalleryVideo(
+        data.title,
+        data.description,
+        data.youtubeUrl,
+      );
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["galleryVideos"] }),
+  });
+}
+
+export function useDeleteGalleryVideo() {
+  const { actor } = useActor();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      if (!actor) throw new Error("Not connected");
+      return actor.deleteGalleryVideo(id);
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["galleryVideos"] }),
   });
 }
 

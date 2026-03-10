@@ -89,24 +89,6 @@ export class ExternalBlob {
         return this;
     }
 }
-export interface _CaffeineStorageRefillResult {
-    success?: boolean;
-    topped_up_amount?: bigint;
-}
-export interface Review {
-    id: string;
-    name: string;
-    reviewText: string;
-    approved: boolean;
-    timestamp: bigint;
-    rating: bigint;
-}
-export interface GalleryPhoto {
-    id: string;
-    title: string;
-    description: string;
-    image: ExternalBlob;
-}
 export interface BlogPost {
     id: string;
     title: string;
@@ -117,16 +99,19 @@ export interface BlogPost {
     coverImage: ExternalBlob;
     category: string;
 }
-export interface _CaffeineStorageRefillInformation {
-    proposed_top_up_amount?: bigint;
-}
-export interface LeadCapture {
+export interface GalleryPhoto {
     id: string;
+    title: string;
+    description: string;
+    image: ExternalBlob;
+}
+export interface UserProfile {
     name: string;
     email: string;
-    timestamp: bigint;
     phone: string;
-    packageId: string;
+}
+export interface _CaffeineStorageRefillInformation {
+    proposed_top_up_amount?: bigint;
 }
 export interface TourPackage {
     id: string;
@@ -142,6 +127,20 @@ export interface _CaffeineStorageCreateCertificateResult {
     method: string;
     blob_hash: string;
 }
+export interface LeadCapture {
+    id: string;
+    name: string;
+    email: string;
+    timestamp: bigint;
+    phone: string;
+    packageId: string;
+}
+export interface GalleryVideo {
+    id: string;
+    title: string;
+    description: string;
+    youtubeUrl: string;
+}
 export interface Booking {
     id: string;
     name: string;
@@ -153,10 +152,17 @@ export interface Booking {
     phone: string;
     packageId: string;
 }
-export interface UserProfile {
+export interface _CaffeineStorageRefillResult {
+    success?: boolean;
+    topped_up_amount?: bigint;
+}
+export interface Review {
+    id: string;
     name: string;
-    email: string;
-    phone: string;
+    reviewText: string;
+    approved: boolean;
+    timestamp: bigint;
+    rating: bigint;
 }
 export enum TourCategory {
     domestic = "domestic",
@@ -178,18 +184,21 @@ export interface backendInterface {
     _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
     addBlogPost(title: string, content: string, author: string, category: string, coverImage: ExternalBlob): Promise<string>;
     addGalleryPhoto(title: string, description: string, image: ExternalBlob): Promise<string>;
+    addGalleryVideo(title: string, description: string, youtubeUrl: string): Promise<string>;
     addTourPackage(title: string, description: string, price: bigint, duration: string, highlights: Array<string>, category: TourCategory, image: ExternalBlob): Promise<string>;
     approveReview(id: string): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     deleteBlogPost(id: string): Promise<void>;
     deleteBooking(id: string): Promise<void>;
     deleteGalleryPhoto(id: string): Promise<void>;
+    deleteGalleryVideo(id: string): Promise<void>;
     deleteLeadCapture(id: string): Promise<void>;
     deleteReview(id: string): Promise<void>;
     deleteTourPackage(id: string): Promise<void>;
     getAllBlogPosts(): Promise<Array<BlogPost>>;
     getAllBookings(): Promise<Array<Booking>>;
     getAllGalleryPhotos(): Promise<Array<GalleryPhoto>>;
+    getAllGalleryVideos(): Promise<Array<GalleryVideo>>;
     getAllLeadCaptures(): Promise<Array<LeadCapture>>;
     getAllReviews(): Promise<Array<Review>>;
     getAllTourPackages(): Promise<Array<TourPackage>>;
@@ -337,6 +346,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async addGalleryVideo(arg0: string, arg1: string, arg2: string): Promise<string> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.addGalleryVideo(arg0, arg1, arg2);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.addGalleryVideo(arg0, arg1, arg2);
+            return result;
+        }
+    }
     async addTourPackage(arg0: string, arg1: string, arg2: bigint, arg3: string, arg4: Array<string>, arg5: TourCategory, arg6: ExternalBlob): Promise<string> {
         if (this.processError) {
             try {
@@ -418,6 +441,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.deleteGalleryPhoto(arg0);
+            return result;
+        }
+    }
+    async deleteGalleryVideo(arg0: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.deleteGalleryVideo(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.deleteGalleryVideo(arg0);
             return result;
         }
     }
@@ -503,6 +540,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getAllGalleryPhotos();
             return from_candid_vec_n17(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getAllGalleryVideos(): Promise<Array<GalleryVideo>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllGalleryVideos();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllGalleryVideos();
+            return result;
         }
     }
     async getAllLeadCaptures(): Promise<Array<LeadCapture>> {

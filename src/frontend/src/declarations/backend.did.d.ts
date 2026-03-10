@@ -38,6 +38,12 @@ export interface GalleryPhoto {
   'description' : string,
   'image' : ExternalBlob,
 }
+export interface GalleryVideo {
+  'id' : string,
+  'title' : string,
+  'description' : string,
+  'youtubeUrl' : string,
+}
 export interface LeadCapture {
   'id' : string,
   'name' : string,
@@ -108,6 +114,7 @@ export interface _SERVICE {
     string
   >,
   'addGalleryPhoto' : ActorMethod<[string, string, ExternalBlob], string>,
+  'addGalleryVideo' : ActorMethod<[string, string, string], string>,
   'addTourPackage' : ActorMethod<
     [string, string, bigint, string, Array<string>, TourCategory, ExternalBlob],
     string
@@ -117,12 +124,14 @@ export interface _SERVICE {
   'deleteBlogPost' : ActorMethod<[string], undefined>,
   'deleteBooking' : ActorMethod<[string], undefined>,
   'deleteGalleryPhoto' : ActorMethod<[string], undefined>,
+  'deleteGalleryVideo' : ActorMethod<[string], undefined>,
   'deleteLeadCapture' : ActorMethod<[string], undefined>,
   'deleteReview' : ActorMethod<[string], undefined>,
   'deleteTourPackage' : ActorMethod<[string], undefined>,
   'getAllBlogPosts' : ActorMethod<[], Array<BlogPost>>,
   'getAllBookings' : ActorMethod<[], Array<Booking>>,
   'getAllGalleryPhotos' : ActorMethod<[], Array<GalleryPhoto>>,
+  'getAllGalleryVideos' : ActorMethod<[], Array<GalleryVideo>>,
   'getAllLeadCaptures' : ActorMethod<[], Array<LeadCapture>>,
   'getAllReviews' : ActorMethod<[], Array<Review>>,
   'getAllTourPackages' : ActorMethod<[], Array<TourPackage>>,

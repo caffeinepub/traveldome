@@ -57,6 +57,12 @@ export const GalleryPhoto = IDL.Record({
   'description' : IDL.Text,
   'image' : ExternalBlob,
 });
+export const GalleryVideo = IDL.Record({
+  'id' : IDL.Text,
+  'title' : IDL.Text,
+  'description' : IDL.Text,
+  'youtubeUrl' : IDL.Text,
+});
 export const LeadCapture = IDL.Record({
   'id' : IDL.Text,
   'name' : IDL.Text,
@@ -127,6 +133,7 @@ export const idlService = IDL.Service({
       [IDL.Text],
       [],
     ),
+  'addGalleryVideo' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [IDL.Text], []),
   'addTourPackage' : IDL.Func(
       [
         IDL.Text,
@@ -145,12 +152,14 @@ export const idlService = IDL.Service({
   'deleteBlogPost' : IDL.Func([IDL.Text], [], []),
   'deleteBooking' : IDL.Func([IDL.Text], [], []),
   'deleteGalleryPhoto' : IDL.Func([IDL.Text], [], []),
+  'deleteGalleryVideo' : IDL.Func([IDL.Text], [], []),
   'deleteLeadCapture' : IDL.Func([IDL.Text], [], []),
   'deleteReview' : IDL.Func([IDL.Text], [], []),
   'deleteTourPackage' : IDL.Func([IDL.Text], [], []),
   'getAllBlogPosts' : IDL.Func([], [IDL.Vec(BlogPost)], ['query']),
   'getAllBookings' : IDL.Func([], [IDL.Vec(Booking)], ['query']),
   'getAllGalleryPhotos' : IDL.Func([], [IDL.Vec(GalleryPhoto)], ['query']),
+  'getAllGalleryVideos' : IDL.Func([], [IDL.Vec(GalleryVideo)], ['query']),
   'getAllLeadCaptures' : IDL.Func([], [IDL.Vec(LeadCapture)], ['query']),
   'getAllReviews' : IDL.Func([], [IDL.Vec(Review)], ['query']),
   'getAllTourPackages' : IDL.Func([], [IDL.Vec(TourPackage)], ['query']),
@@ -263,6 +272,12 @@ export const idlFactory = ({ IDL }) => {
     'description' : IDL.Text,
     'image' : ExternalBlob,
   });
+  const GalleryVideo = IDL.Record({
+    'id' : IDL.Text,
+    'title' : IDL.Text,
+    'description' : IDL.Text,
+    'youtubeUrl' : IDL.Text,
+  });
   const LeadCapture = IDL.Record({
     'id' : IDL.Text,
     'name' : IDL.Text,
@@ -333,6 +348,11 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Text],
         [],
       ),
+    'addGalleryVideo' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Text],
+        [],
+      ),
     'addTourPackage' : IDL.Func(
         [
           IDL.Text,
@@ -351,12 +371,14 @@ export const idlFactory = ({ IDL }) => {
     'deleteBlogPost' : IDL.Func([IDL.Text], [], []),
     'deleteBooking' : IDL.Func([IDL.Text], [], []),
     'deleteGalleryPhoto' : IDL.Func([IDL.Text], [], []),
+    'deleteGalleryVideo' : IDL.Func([IDL.Text], [], []),
     'deleteLeadCapture' : IDL.Func([IDL.Text], [], []),
     'deleteReview' : IDL.Func([IDL.Text], [], []),
     'deleteTourPackage' : IDL.Func([IDL.Text], [], []),
     'getAllBlogPosts' : IDL.Func([], [IDL.Vec(BlogPost)], ['query']),
     'getAllBookings' : IDL.Func([], [IDL.Vec(Booking)], ['query']),
     'getAllGalleryPhotos' : IDL.Func([], [IDL.Vec(GalleryPhoto)], ['query']),
+    'getAllGalleryVideos' : IDL.Func([], [IDL.Vec(GalleryVideo)], ['query']),
     'getAllLeadCaptures' : IDL.Func([], [IDL.Vec(LeadCapture)], ['query']),
     'getAllReviews' : IDL.Func([], [IDL.Vec(Review)], ['query']),
     'getAllTourPackages' : IDL.Func([], [IDL.Vec(TourPackage)], ['query']),

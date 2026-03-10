@@ -11,8 +11,6 @@ import Principal "mo:core/Principal";
 import Storage "blob-storage/Storage";
 import AccessControl "authorization/access-control";
 
-
-
 actor {
   // Include prefabricated components
   let accessControlState = AccessControl.initState();
@@ -83,6 +81,13 @@ actor {
     image : Storage.ExternalBlob;
   };
 
+  public type GalleryVideo = {
+    id : Text;
+    title : Text;
+    description : Text;
+    youtubeUrl : Text;
+  };
+
   type Review = {
     id : Text;
     name : Text;
@@ -115,6 +120,7 @@ actor {
   let tourPackages = Map.empty<Text, TourPackage>();
   let bookings = Map.empty<Text, Booking>();
   let gallery = Map.empty<Text, GalleryPhoto>();
+  let galleryVideos = Map.empty<Text, GalleryVideo>();
   let reviews = Map.empty<Text, Review>();
   let blogPosts = Map.empty<Text, BlogPost>();
   let leadCaptures = Map.empty<Text, LeadCapture>();
@@ -171,13 +177,11 @@ actor {
   };
 
   public query func getAllTourPackages() : async [TourPackage] {
-    // Public access - no authorization needed
     tourPackages.values().toArray();
   };
 
   // Bookings
   public shared func submitBooking(name : Text, email : Text, phone : Text, travelDates : Text, travelers : Nat, message : Text, packageId : Text) : async Text {
-    // Public access - anyone including guests can submit bookings
     let id = name.concat(Time.now().toText());
     let booking : Booking = {
       id;
@@ -208,7 +212,7 @@ actor {
     bookings.remove(id);
   };
 
-  // Gallery
+  // Gallery Photos
   public shared ({ caller }) func addGalleryPhoto(title : Text, description : Text, image : Storage.ExternalBlob) : async Text {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can add gallery photos");
@@ -252,13 +256,39 @@ actor {
   };
 
   public query func getAllGalleryPhotos() : async [GalleryPhoto] {
-    // Public access - no authorization needed
     gallery.values().toArray();
+  };
+
+  // Gallery Videos (NEW)
+  public shared ({ caller }) func addGalleryVideo(title : Text, description : Text, youtubeUrl : Text) : async Text {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can add gallery videos");
+    };
+
+    let id = title.concat(Time.now().toText());
+    let video : GalleryVideo = {
+      id;
+      title;
+      description;
+      youtubeUrl;
+    };
+    galleryVideos.add(id, video);
+    id;
+  };
+
+  public shared ({ caller }) func deleteGalleryVideo(id : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can delete gallery videos");
+    };
+    galleryVideos.remove(id);
+  };
+
+  public query func getAllGalleryVideos() : async [GalleryVideo] {
+    galleryVideos.values().toArray();
   };
 
   // Reviews
   public shared func submitReview(name : Text, rating : Nat, reviewText : Text) : async Text {
-    // Public access - anyone including guests can submit reviews
     if (rating < 1 or rating > 5) {
       Runtime.trap("Rating must be between 1 and 5");
     };
@@ -297,7 +327,6 @@ actor {
   };
 
   public query func getApprovedReviews() : async [Review] {
-    // Public access - no authorization needed
     let approvedList = List.empty<Review>();
     for (review in reviews.values()) {
       if (review.approved) {
@@ -380,7 +409,6 @@ actor {
   };
 
   public query func getPublishedBlogPosts() : async [BlogPost] {
-    // Public access - no authorization needed
     let publishedList = List.empty<BlogPost>();
     for (post in blogPosts.values()) {
       if (post.published) {
@@ -399,7 +427,6 @@ actor {
 
   // Lead Capture
   public shared ({ caller }) func submitLeadCapture(name : Text, phone : Text, email : Text, packageId : Text) : async Text {
-    // Public access - anyone including guests can submit leads
     let id = name.concat(Time.now().toText());
     let lead : LeadCapture = {
       id;

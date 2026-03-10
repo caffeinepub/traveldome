@@ -3,7 +3,10 @@ import { motion } from "motion/react";
 import SectionHeader from "../components/shared/SectionHeader";
 import { useLanguage } from "../contexts/LanguageContext";
 import { sampleGallery } from "../data/sampleData";
-import { useGetAllGalleryPhotos } from "../hooks/useQueries";
+import {
+  useGetAllGalleryPhotos,
+  useGetAllGalleryVideos,
+} from "../hooks/useQueries";
 
 function getPhotoUrl(image: string | { getDirectURL: () => string }): string {
   if (typeof image === "string") return image;
@@ -14,9 +17,17 @@ function getPhotoUrl(image: string | { getDirectURL: () => string }): string {
   }
 }
 
+function getYoutubeId(url: string): string | null {
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+  );
+  return match ? match[1] : null;
+}
+
 export default function Gallery() {
   const { t } = useLanguage();
-  const { data: photos, isLoading } = useGetAllGalleryPhotos();
+  const { data: photos, isLoading: photosLoading } = useGetAllGalleryPhotos();
+  const { data: videos, isLoading: videosLoading } = useGetAllGalleryVideos();
 
   const displayPhotos = photos && photos.length > 0 ? photos : sampleGallery;
 
@@ -51,10 +62,10 @@ export default function Gallery() {
         </div>
       </div>
 
-      {/* Gallery grid */}
+      {/* Photo gallery grid */}
       <section className="section-padding">
         <div className="container mx-auto px-4">
-          {isLoading ? (
+          {photosLoading ? (
             <div className="masonry-grid">
               {(["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"] as const).map(
                 (sk, i) => (
@@ -108,12 +119,85 @@ export default function Gallery() {
             </div>
           )}
 
-          {!isLoading && displayPhotos.length === 0 && (
+          {!photosLoading && displayPhotos.length === 0 && (
             <div
               className="text-center py-20 text-muted-foreground"
               data-ocid="gallery.empty_state"
             >
               <p>{t("no_results")}</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Videos section */}
+      <section className="section-padding bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <SectionHeader
+            title="Tour Videos"
+            subtitle="Watch our destination highlights and travel experiences"
+          />
+
+          {videosLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+              {(["v1", "v2", "v3"] as const).map((sk) => (
+                <div key={sk} data-ocid="gallery.videos.loading_state">
+                  <Skeleton className="w-full aspect-video rounded-xl" />
+                  <Skeleton className="w-2/3 h-4 mt-3 rounded" />
+                  <Skeleton className="w-full h-3 mt-2 rounded" />
+                </div>
+              ))}
+            </div>
+          ) : videos && videos.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+              {videos.map((video, i) => {
+                const videoId = getYoutubeId(video.youtubeUrl);
+                return (
+                  <motion.div
+                    key={video.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                    className="group"
+                    data-ocid={`gallery.videos.item.${i + 1}`}
+                  >
+                    <div className="relative aspect-video rounded-xl overflow-hidden bg-muted shadow-md">
+                      {videoId ? (
+                        <iframe
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          title={video.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground text-sm">
+                          Invalid video URL
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-3 px-1">
+                      <h3 className="font-semibold text-foreground text-sm leading-snug">
+                        {video.title}
+                      </h3>
+                      {video.description && (
+                        <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
+                          {video.description}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          ) : (
+            <div
+              className="text-center py-16 text-muted-foreground"
+              data-ocid="gallery.videos.empty_state"
+            >
+              <p className="text-sm">No videos added yet. Check back soon.</p>
             </div>
           )}
         </div>

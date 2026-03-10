@@ -1,31 +1,26 @@
 # TravelDome
 
 ## Current State
-- Multi-page tourism website with Home, Packages, Gallery, Blog, Reviews, Contact, Admin Panel
-- Reviews page shows all reviews in a 2-column grid
-- index.html has no favicon set
-- 5 real Google reviews already in sampleData.ts
-- TravelDome logo available at /assets/uploads/TravelDome-logo-3--1.png
+The website has a Gallery page (/gallery) that shows photos from the backend. AdminGallery allows admin to upload photos via blob-storage. There is no video support in the gallery.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Favicon link in index.html pointing to TravelDome logo (so Google search results show logo icon in circle)
-- Reviews carousel/slider with prev/next navigation arrows and dot indicators
+- GalleryVideo type in backend with fields: id, title, description, youtubeUrl
+- Backend functions: addGalleryVideo, deleteGalleryVideo, getAllGalleryVideos
+- Gallery page: separate "Photos" section (masonry grid) and "Videos" section (YouTube embed grid)
+- AdminGallery: tab/toggle to switch between Photos and Videos management; form to add YouTube video link with title and description
 
 ### Modify
-- Reviews.tsx: replace static 2-column grid with an auto-playing carousel showing 1 review card at a time (mobile) and 2 at a time (desktop), with left/right arrow buttons and dot pagination
-- index.html: add <link rel="icon"> and <link rel="apple-touch-icon"> tags pointing to TravelDome logo
+- Gallery.tsx: split into Photos grid + Videos grid sections, YouTube videos shown as embedded iframes
+- AdminGallery.tsx: add Videos tab with YouTube link form and video management
 
 ### Remove
-- Static grid layout for reviews cards
+- Nothing
 
 ## Implementation Plan
-1. Update index.html to add favicon tags pointing to /assets/uploads/TravelDome-logo-3--1.png
-2. Update Reviews.tsx to replace the reviews grid with a carousel:
-   - Show 1 card on mobile, 2 cards on desktop
-   - Auto-advance every 5 seconds
-   - Left/right arrow navigation buttons
-   - Dot indicators at bottom
-   - Smooth slide animation
-   - All 5 reviews shown, no truncation
+1. Update backend main.mo to add GalleryVideo type and CRUD functions
+2. Regenerate backend.d.ts
+3. Update Gallery.tsx to show photos in masonry grid + YouTube videos in card grid
+4. Update AdminGallery.tsx to support both photo upload and YouTube video link addition
+5. Update useQueries.ts hooks for gallery videos
